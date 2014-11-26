@@ -2,7 +2,7 @@
 <!DOCTYPE mapper  
 	  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
 	  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace = "com.lin.mapper.StudentMapper">
+<mapper namespace = "com.lin.dao.StudentMapper">
 	
 	<resultMap type="com.lin.model.StudentEntity" id="studentEntity">
 		<id property="studentID" column="studentID"/>  

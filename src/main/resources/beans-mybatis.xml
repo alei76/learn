@@ -44,7 +44,7 @@
 	</bean>
 	<!-- 自动扫描mapper接口 -->
 	<bean name="mapperScanner" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.lin.mapper" />
+		<property name="basePackage" value="com.lin.dao" />
 		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
 	</bean>
 	<!-- Spring事务管理 -->
@@ -79,22 +79,5 @@
 			</list>
 		</property>
 	</bean>
-	<bean id="simpleJob" class="com.lin.quartz.SimpleJob"></bean>  
-	<bean id="jobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">  
-		<property name="targetObject" ref="simpleJob"></property>  
-		<property name="targetMethod" value="execute"></property>  
-	</bean>  
-	<bean id="trigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">  
-		<property name="jobDetail" ref="jobDetail"></property>  
-		<property name="cronExpression" value="* 1 * * * ?"></property>  
-	</bean>  
-	<bean id="schedulerFactory" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">  
-		<property name="triggers">  
-			<list>  
-				<ref bean="trigger"/>  
-			</list>  
-		</property>  
-	</bean>  
-	
 	
 </beans>
