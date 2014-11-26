@@ -171,11 +171,11 @@
 			<artifactId>lucene-analyzers-common</artifactId>
 			<version>4.10.2</version>
 		</dependency>
-		<!-- <dependency>
-			<groupId>org.apache.tika</groupId>
-			<artifactId>tika-app</artifactId>
-			<version>1.6</version>
-		</dependency> -->
+		<dependency>
+			<groupId>com.qiniu</groupId>
+			<artifactId>sdk</artifactId>
+			<version>[6.1.7, 6.999]</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>learn</finalName>
