@@ -51,6 +51,7 @@ public class LuceneUtil {
 		if(!indexDirectory.exists()){
 			indexDirectory.mkdirs();
 		}
+		long start = System.currentTimeMillis();
 		FSDirectory fsd = FSDirectory.open(indexDirectory);
 		IndexWriterConfig config = new IndexWriterConfig(version, analyzer);
 		config.setOpenMode(openMode);
@@ -67,6 +68,8 @@ public class LuceneUtil {
 			writer.addDocument(doc);
 		}
 		writer.commit();
+		long end = System.currentTimeMillis();
+		System.out.println("共花费-----"+(end-start)/1000+"秒");
 	}
 
 
@@ -101,10 +104,7 @@ public class LuceneUtil {
 		return tika.parseToString(file);
 	}
 	public static void main(String[] args)throws Exception {
-			//new LuceneUtil().diskIndex(new File("d:\\lucene"), new File("d:\\luceneIndex"), new IKAnalyzer(), Version.LUCENE_4_10_2, OpenMode.CREATE);
-			new LuceneUtil().search(new File("d:\\luceneIndex"),"接口",new IKAnalyzer());
-		Tika tika = new Tika();
-		String str = tika.parseToString(new FileInputStream("d:\\lucene\\IKAnalyzer中文分词器V2012_FF使用手册.pdf"));
-		System.out.println(str);
+			new LuceneUtil().diskIndex(new File("d:\\"), new File("e:\\luceneIndex"), new IKAnalyzer(), Version.LUCENE_4_10_2, OpenMode.CREATE);
+			//new LuceneUtil().search(new File("d:\\luceneIndex"),"接口",new IKAnalyzer());
 	}
 }

@@ -1,6 +1,7 @@
 package com.lin.util;
 
 public class Constant {
+
 	/**
 	 * qiniu 配置
 	 */
@@ -9,4 +10,10 @@ public class Constant {
 	public static final String BUCK_NAME = "hackcoder";
 	public static final String DOMAIN = "hackcoder.qiniudn.com";
 
+	/**
+	 * QQ连接(www.hackcoder.cn)
+	 */
+	public static final String APP_ID = "101174056";
+	public static final String APP_KEY = "5d9bf20b443b37953d37545058d2d96a";
+	
 }

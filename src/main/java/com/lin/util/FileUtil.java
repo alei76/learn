@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FileUtil {
+	
 	/**
 	 * 列出目录下的所有文件
 	 * 
@@ -23,7 +24,8 @@ public class FileUtil {
 		if (directory.isDirectory()) {
 			File[] files = directory.listFiles();
 			for (File file : files) {
-				if (file.isFile()) {
+				if (file.isFile()&&!file.isHidden()&&file.canWrite()) {
+					System.out.println("path======"+file.getAbsolutePath());
 					list.add(file);
 				} else if (file.isDirectory()) {
 					list.addAll(listFile(file));
@@ -51,7 +53,6 @@ public class FileUtil {
 		while ((ch = inputStream.read(bytes)) != -1) {
 			baos.write(bytes);
 		}
-
 		baos.close();
 		inputStream.close();
 		return baos.toString();
