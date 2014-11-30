@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+	  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+	  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace = "com.lin.dao.StudentMapper">
+	
+	<resultMap type="com.lin.model.StudentEntity" id="studentEntity">
+		<id property="studentID" column="studentID"/>  
+		<result property="studentName" column="studentName"/>  
+		<result property="studentSex" column="studentSex"/>  
+		<result property="studentBirthday" column="studentBirthday"/>  
+	</resultMap>
+	<select id="getStudent" parameterType="int" resultMap="studentEntity">
+		SELECT * FROM STUDENT S WHERE S.studentID = #{studentID}
+	</select>
+	<select id="getStudentAll"  resultType="map">
+		SELECT * FROM STUDENT S
+	</select>
+	<insert id="insertStudent" parameterType="com.lin.model.StudentEntity" useGeneratedKeys="true" keyProperty="studentID">
+		insert into STUDENT(studentID,studentName,studentSex,studentBirthday)
+		 values(#{studentID},#{studentName},#{studentSex},#{studentBirthday})
+	</insert>
+	<update id="updateStudent" parameterType="com.lin.model.StudentEntity" >
+		update STUDENT s
+		set 
+		s.studentName=#{studentName},
+		s.studentSex =#{studentSex},
+		s.studentBirthday =#{studentBirthday}
+		where s.studentID=#{studentID}
+	</update>
+	<delete id="deleteStudent" parameterType="int">
+		delete from Student  where studentID=#{studentId}
+	</delete>
+</mapper>

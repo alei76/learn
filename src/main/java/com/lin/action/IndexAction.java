@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.qq.connect.oauth.Oauth;
 
+
 @Controller
 @RequestMapping(value = "/")
 public class IndexAction {
@@ -17,6 +18,7 @@ public class IndexAction {
 
 	@RequestMapping(value = "/qqAuth")
 	public String qqAuth() throws Exception {
+		
 		String url = new Oauth().getAuthorizeURL(request);
 		return "redirect:/" + url;
 	}
