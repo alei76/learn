@@ -1,7 +1,8 @@
 package com.lin.model;
 
+import com.lin.model.base.BaseObject;
 
-public class StudentEntity {
+public class StudentEntity extends BaseObject {
 	private static final long serialVersionUID = 3096154202413606831L;
 	private String studentBirthday;
 	private String studentID;
@@ -56,5 +57,5 @@ public class StudentEntity {
 		this.studentName = studentName;
 		this.studentSex = studentSex;
 	}
-	
+
 }

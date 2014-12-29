@@ -29,7 +29,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/org.eclipse.jst.server.tomcat.runtimeTarget/Apache Tomcat v7.0"/>
-	<classpathentry kind="lib" path="D:/work/lib/IKAnalyzer2012FF_u1.jar"/>
-	<classpathentry kind="lib" path="E:/download/tika-app-1.6.jar"/>
+	<classpathentry kind="lib" path="lib/IKAnalyzer2012FF_u1.jar"/>
+	<classpathentry kind="lib" path="lib/tika-app-1.6.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

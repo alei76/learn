@@ -30,11 +30,12 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
+import com.lin.action.base.BaseAction;
 import com.lin.model.StudentEntity;
 
 @Controller
 @RequestMapping(value = "/")
-public class MainAction {
+public class MainAction extends BaseAction {
 	@RequestMapping(value = "/index")
 	public String index() {
 		return "index";
@@ -152,12 +153,14 @@ public class MainAction {
 	public ResponseEntity<byte[]> downFile(String filename,
 			HttpServletRequest req) throws IOException {
 		String path = req.getSession().getServletContext()
-				.getRealPath("upload")+"\\"+filename;
-		
+				.getRealPath("upload")
+				+ "\\" + filename;
+
 		filename = URLEncoder.encode((path), "UTF-8");
 		HttpHeaders header = new HttpHeaders();
 		header.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-		header.setContentDispositionFormData("attachment", new String("下载.CHM".getBytes("UTF-8"),"iso-8859-1"));
+		header.setContentDispositionFormData("attachment",
+				new String("下载.CHM".getBytes("UTF-8"), "iso-8859-1"));
 		return new ResponseEntity<byte[]>(
 				FileUtils.readFileToByteArray(new File(path)), header,
 				HttpStatus.OK);
