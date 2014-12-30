@@ -1,2 +1,2 @@
-SpringMVC+MyBatis+Spring++Redis+Lucene4.10实战
+SpringMVC+MyBatis+Spring+Redis+Lucene4.10实战
 ===============
