@@ -7,6 +7,11 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.web.bind.annotation.ModelAttribute;
 
+/**
+ * 
+ * @author hackcoder
+ *
+ */
 public class BaseAction {
 
 	protected HttpServletRequest request;

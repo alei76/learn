@@ -24,11 +24,13 @@
 			<null></null>
 		</property>
 	</bean>
+	
 	<bean id="task"
 		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
 		<property name="targetObject" ref="simpleJob"></property>
 		<property name="targetMethod" value="execute"></property>
 	</bean>
+	
 	<bean id="trigger"
 		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="task"></property>

@@ -7,7 +7,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
@@ -36,6 +35,7 @@ import com.lin.model.StudentEntity;
 @Controller
 @RequestMapping(value = "/")
 public class MainAction extends BaseAction {
+	
 	@RequestMapping(value = "/index")
 	public String index() {
 		return "index";

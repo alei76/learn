@@ -2,19 +2,20 @@ package com.lin.service;
 
 import java.util.List;
 
-import com.lin.model.ContentObject;
+import com.lin.model.Content;
+
 /**
- *  Class Name: ContentService.java
- *  Function:
- *  @author JLC  From liutime.com
- *  @version 1.0
+ * 
+ * @author hackcoder
+ *
  */
 public interface ContentService {
 	/**
-	 *  Function:
-	 *  @author JLC 
-	 *  @return
-	 *  @throws Exception
+	 * Function:
+	 * 
+	 * @author JLC
+	 * @return
+	 * @throws Exception
 	 */
-	public List<ContentObject> getContentList() throws Exception;
+	public List<Content> getContentList() throws Exception;
 }

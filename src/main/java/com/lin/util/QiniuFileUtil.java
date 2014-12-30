@@ -30,7 +30,7 @@ import com.qiniu.api.rsf.RSFEofException;
 public class QiniuFileUtil {
 	private static Mac mac;
 	static {
-		mac = new Mac(Constant.ACCESS_KEY, Constant.SECRET_KEY);
+		mac = new Mac(ConfigConstant.ACCESS_KEY, ConfigConstant.SECRET_KEY);
 	}
 
 	/**
@@ -43,7 +43,7 @@ public class QiniuFileUtil {
 	 */
 	public static void upload(String fileName, String filePath)
 			throws AuthException, JSONException {
-		PutPolicy putPolicy = new PutPolicy(Constant.BUCK_NAME);
+		PutPolicy putPolicy = new PutPolicy(ConfigConstant.BUCK_NAME);
 		String uptoken = putPolicy.token(mac);
 		PutExtra extra = new PutExtra();
 		PutRet ret = IoApi.putFile(uptoken, fileName, filePath, extra);
@@ -57,7 +57,7 @@ public class QiniuFileUtil {
 	 */
 	public static Entry stat(String key) {
 		RSClient client = new RSClient(mac);
-		Entry statRet = client.stat(Constant.BUCK_NAME, key);
+		Entry statRet = client.stat(ConfigConstant.BUCK_NAME, key);
 		return statRet;
 	}
 
@@ -69,7 +69,7 @@ public class QiniuFileUtil {
 	 * @throws JSONException
 	 */
 	public static String getToken() throws AuthException, JSONException {
-		PutPolicy putPolicy = new PutPolicy(Constant.BUCK_NAME);
+		PutPolicy putPolicy = new PutPolicy(ConfigConstant.BUCK_NAME);
 		String uptoken = putPolicy.token(mac);
 		return uptoken;
 	}
@@ -84,7 +84,7 @@ public class QiniuFileUtil {
 	 */
 	public static String down(String key) throws EncoderException,
 			AuthException {
-		String baseUrl = URLUtils.makeBaseUrl(Constant.DOMAIN, key);
+		String baseUrl = URLUtils.makeBaseUrl(ConfigConstant.DOMAIN, key);
 		GetPolicy getPolicy = new GetPolicy();
 		String downloadUrl = getPolicy.makeRequest(baseUrl, mac);
 		return downloadUrl;
@@ -112,7 +112,7 @@ public class QiniuFileUtil {
 	 */
 	public static void delete(String key) {
 		RSClient client = new RSClient(mac);
-		client.delete(Constant.BUCK_NAME, key);
+		client.delete(ConfigConstant.BUCK_NAME, key);
 	}
 
 	/**
@@ -122,7 +122,7 @@ public class QiniuFileUtil {
 	 * @return
 	 */
 	public static ImageInfoRet fopImageInfo(String key) {
-		String url = "http://" + Constant.DOMAIN + "/" + key;
+		String url = "http://" + ConfigConstant.DOMAIN + "/" + key;
 		ImageInfoRet ret = ImageInfo.call(url);
 		return ret;
 	}
@@ -134,7 +134,7 @@ public class QiniuFileUtil {
 	 * @return
 	 */
 	public static ExifRet fopImageExif(String key) {
-		String url = "http://" + Constant.DOMAIN + "/" + key;
+		String url = "http://" + ConfigConstant.DOMAIN + "/" + key;
 		ExifRet ret = ImageExif.call(url);
 		return ret;
 	}
@@ -145,7 +145,7 @@ public class QiniuFileUtil {
 	 * @param key
 	 */
 	public static CallRet fopImageView(String key) {
-		String url = "http://" + Constant.DOMAIN + "/" + key;
+		String url = "http://" + ConfigConstant.DOMAIN + "/" + key;
 		ImageView iv = new ImageView();
 		iv.mode = 1;
 		iv.width = 100;
@@ -169,7 +169,7 @@ public class QiniuFileUtil {
 		List<ListItem> all = new ArrayList<ListItem>();
 		ListPrefixRet ret = null;
 		while (true) {
-			ret = client.listPrifix(Constant.BUCK_NAME, profix, marker, 10);
+			ret = client.listPrifix(ConfigConstant.BUCK_NAME, profix, marker, 10);
 			marker = ret.marker;
 			all.addAll(ret.results);
 			if (!ret.ok()) {

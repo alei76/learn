@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
@@ -12,6 +11,7 @@ import org.apache.lucene.index.IndexWriterConfig.OpenMode;
 import org.apache.lucene.index.LogDocMergePolicy;
 import org.apache.lucene.index.LogMergePolicy;
 import org.apache.lucene.index.TrackingIndexWriter;
+import org.apache.lucene.search.ControlledRealTimeReopenThread;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.SearcherFactory;
 import org.apache.lucene.search.SearcherManager;
@@ -20,19 +20,25 @@ import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
+import com.lin.util.ConfigConstant;
+
+/**
+ * 
+ * @author hackcoder
+ */
 public class SearchEngineCore {
 
-	public String INDEX_PATH = "c:/lucentindex/searchdata/";
+	public String INDEX_PATH = ConfigConstant.INDEX_PATH;
 	private IndexWriter writer;
 	private Analyzer analyzer;
-	private Version version = Version.LUCENE_4_10_2;;
-	private NRTManager nrtMgr;
-	private TrackingIndexWriter tw;
-	private SearcherManager sm;
+	private Version version = ConfigConstant.version;
+	private TrackingIndexWriter tkWriter;
+	private SearcherManager mgr;
 	private Directory directory;
-	private NRTManagerReopenThread reopenThread;
+	private ControlledRealTimeReopenThread<IndexSearcher> crtThread;
 
 	public SearchEngineCore() {
+
 	}
 
 	/**
@@ -46,9 +52,8 @@ public class SearchEngineCore {
 			INDEX_PATH = indexPath;
 			// 创建索引目录
 			directory = FSDirectory.open(new File(INDEX_PATH));
-			// 标准分词器
-			analyzer = new IKAnalyzer();// new IKAnalyzer();
-			SearcherFactory searcherFactory = new SearcherFactory();
+			// IK分词器
+			analyzer = new IKAnalyzer();
 			LogMergePolicy mergePolicy = new LogDocMergePolicy();
 			// 索引基本配置
 			// 设置segment添加文档(Document)时的合并频率
@@ -60,7 +65,8 @@ public class SearchEngineCore {
 			// 值较大,适合批量建立索引和更快的搜索
 			mergePolicy.setMaxMergeDocs(1000);
 			// 启用复合式索引文件格式,合并多个segment
-			mergePolicy.setUseCompoundFile(true);
+			// mergePolicy.setUseCompoundFile(true);
+
 			IndexWriterConfig indexWriterConfig = new IndexWriterConfig(
 					version, analyzer);
 			indexWriterConfig.setMaxBufferedDocs(10000);
@@ -74,17 +80,20 @@ public class SearchEngineCore {
 			}
 			// 创建索引器
 			writer = new IndexWriter(directory, indexWriterConfig);
-			// 实现近实时搜索
-			tw = new NRTManager.TrackingIndexWriter(writer);
 			// 最开始创建索引时必须先提交，不然引起读取方法报错
 			writer.commit();
-			nrtMgr = new NRTManager(tw, searcherFactory, true);
-			sm = new SearcherManager(directory, searcherFactory);
+
+			SearcherFactory searcherFactory = new SearcherFactory();
+			mgr = new SearcherManager(writer, false, searcherFactory);
+
 			// 创建IndexWriter 写入监听线程 5.0为创建5个线程，执行频率为0.025秒
-			reopenThread = new NRTManagerReopenThread(nrtMgr, 5.0, 0.025);
-			reopenThread.setName("NRTManager reopen thread");
-			reopenThread.setDaemon(true);
-			reopenThread.start();
+			// 实现近实时搜索
+			tkWriter = new TrackingIndexWriter(writer);
+			crtThread = new ControlledRealTimeReopenThread<IndexSearcher>(
+					tkWriter, mgr, 5.0, 0.025);
+			crtThread.setDaemon(true);
+			crtThread.setName("hackcoder real time search thread");
+			crtThread.start();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -95,14 +104,24 @@ public class SearchEngineCore {
 	 * 
 	 * @author JLC
 	 * @return
+	 * @throws IOException
 	 */
 	public IndexSearcher getSearcher() {
-		return sm.acquire();
+		IndexSearcher searcher = null;
+		try {
+			// 更新看看内存中索引是否有变化如果，有一个更新了，其他线程也会更新
+			mgr.maybeRefresh();
+			searcher = mgr.acquire();
+			return searcher;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	public void releaseSearcher(IndexSearcher searcher) {
 		try {
-			sm.release(searcher);
+			mgr.release(searcher);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -154,14 +173,10 @@ public class SearchEngineCore {
 	 */
 	public void refreshData() {
 		try {
-			sm.maybeRefresh();
+			mgr.maybeRefresh();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-
-	public NRTManager getNRTManager() {
-		return nrtMgr;
 	}
 
 	public Version getVersion() {
@@ -181,6 +196,6 @@ public class SearchEngineCore {
 	}
 
 	public TrackingIndexWriter getTw() {
-		return tw;
+		return tkWriter;
 	}
 }

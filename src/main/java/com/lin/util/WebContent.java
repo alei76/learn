@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.lin.model.ContentObject;
+import com.lin.model.Content;
 
 public class WebContent {
 	/**
@@ -126,8 +126,8 @@ public class WebContent {
 	 * @param url
 	 * @return
 	 */
-	public ContentObject getContentFromSite(String url) {
-		ContentObject cobj = new ContentObject();
+	public Content getContentFromSite(String url) {
+		Content cobj = new Content();
 		String html = "";
 		try {
 			html = getOneHtml(url);

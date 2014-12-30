@@ -6,10 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.lin.dao.ArticleDao;
-import com.lin.model.ContentObject;
+import com.lin.model.Content;
 import com.lin.service.ContentService;
 
-@Service("contentService")
+/**
+ * 
+ * @author hackcoder
+ *
+ */
+@Service("contentServiceImpl")
 public class ContentServiceImpl implements ContentService {
 
 	@Autowired
@@ -19,7 +24,7 @@ public class ContentServiceImpl implements ContentService {
 		this.articleDao = articleDao;
 	}
 
-	public List<ContentObject> getContentList() throws Exception {
+	public List<Content> getContentList() throws Exception {
 		return articleDao.getContentList();
 	}
 

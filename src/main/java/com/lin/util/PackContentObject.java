@@ -20,7 +20,7 @@ import org.apache.lucene.search.highlight.SimpleHTMLFormatter;
 import org.apache.lucene.search.highlight.SimpleSpanFragmenter;
 import org.apache.lucene.util.Version;
 
-import com.lin.model.ContentObject;
+import com.lin.model.Content;
 
 /**
  * 不同对象之间转换
@@ -37,7 +37,7 @@ public class PackContentObject {
 	 * @param ct
 	 * @return
 	 */
-	public static Document convertContentToDoc(ContentObject ct) {
+	public static Document convertContentToDoc(Content ct) {
 		Document doc = new Document();
 		// Field.Store.YES 表示存储内容
 		doc.add(new StringField("title", ct.getTitle(), Field.Store.YES));
@@ -53,8 +53,8 @@ public class PackContentObject {
 	 * @param doc
 	 * @return
 	 */
-	public static ContentObject convertDocToContent(Document doc) {
-		ContentObject ct = new ContentObject();
+	public static Content convertDocToContent(Document doc) {
+		Content ct = new Content();
 		ct.setTitle(doc.get("title"));
 		ct.setContent(doc.get("content"));
 		Date dt = new Date(Long.parseLong(doc.get("createDate")));
@@ -68,9 +68,9 @@ public class PackContentObject {
 	 * @param doc
 	 * @return
 	 */
-	public static ContentObject convertDocToContent(Document doc, Query query,
+	public static Content convertDocToContent(Document doc, Query query,
 			Analyzer analyzer) {
-		ContentObject ct = new ContentObject();
+		Content ct = new Content();
 		ct.setTitle(highligher(doc.get("title"), query, "title"));
 		ct.setContent(doc.get("content"));
 		Date dt = new Date(Long.parseLong(doc.get("createDate")));

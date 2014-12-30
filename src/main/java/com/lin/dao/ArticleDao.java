@@ -2,14 +2,14 @@ package com.lin.dao;
 
 import java.util.List;
 
-import com.lin.model.ContentObject;
+import com.lin.model.Content;
 
+/**
+ * 
+ * @author hackcoder
+ *
+ */
 public interface ArticleDao {
-	/**
-	 * Function:取得所有文章内容
-	 * 
-	 * @author JLC
-	 * @return
-	 */
-	public List<ContentObject> getContentList();
+
+	public List<Content> getContentList();
 }
